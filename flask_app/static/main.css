@@ -1,0 +1,32 @@
+body {
+    background: #fafafa;
+    color: #333333;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.content-section{
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #dddddd;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.content-section:hover{
+    background:#F8F8F8;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+}
+
+.article-title {
+    color: #444444;
+}
+
+.article-content {
+    white-space: pre-line;
+}

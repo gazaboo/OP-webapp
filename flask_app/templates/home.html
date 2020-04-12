@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>Liste des accueillants</h1>
+    {% for accueillant in accueillants %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class ="mr-2" href="#">{{accueillant.dispo}}</a>
+                    <small class="text-muted">{{accueillant.tel}}</small>
+                    <small class="text-muted">{{accueillant.adresse}}</small>        
+                    <small class="text-muted">{{accueillant.adresse_mail}}</small>        
+                </div>
+                <h3 class="article-title"> {{ accueillant.nom }} </h2>
+                <p class ="article-content"> {{ accueillant.prochaine_action }} </p>
+                <p class ="article-content"> {{ accueillant.historique }} </p>
+                <p class ="article-content"> {{ accueillant.dernier_mail_date }} </p>
+            </div>
+
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Envoyer un mail</legend>
+                    <div class="form-group">
+                        {{ form.body.label(class="form-control-label") }}
+
+                        {% if form.body.errors %}
+                            {{ form.body(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.body.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor%}
+                            </div>
+                        {% else %}
+                            {{ form.body(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info")}}
+                </div>
+            </form>
+        </article>
+    {% endfor %}
+{% endblock content %}
