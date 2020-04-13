@@ -1,0 +1,1 @@
+Bash : docker run -p 5000:5000 -v {folder}:/usr/src/app {image id}
