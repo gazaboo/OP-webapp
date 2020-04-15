@@ -1,40 +1,65 @@
+from flask_login import UserMixin
 from datetime import datetime
 from flask_app import db, login_manager
-from flask_login import UserMixin
+
 
 @login_manager.user_loader
 def load_coordinateur(coordo_id):
     return Coordinateur.query.get(int(coordo_id))
 
+
 class Accueillant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    disponibilite = db.Column(db.String(120), unique=False, nullable=True)
     nom = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-    historique_msg = db.relationship('Email_OP', backref='author', lazy=True)
+    tel = db.Column(db.String(120), unique=False, nullable=True)
+    adresse = db.Column(db.String(120), unique=False, nullable=True)
+    email = db.Column(db.String(120), unique=False, nullable=True)
+    next_action = db.Column(db.Text, unique=False, nullable=True)
+    remarques = db.Column(db.Text, unique=False, nullable=True)
 
     def __repr__(self):
         return f"Accueillant : {self.nom}, {self.email}"
+
+    def __init__(self, disponibilite, nom, tel, adresse, email, next_action, remarques):
+        self.disponibilite = disponibilite
+        self.nom = nom
+        self.tel = tel
+        self.adresse = adresse
+        self.email = email
+        self.next_action = next_action
+        self.remarques = remarques
+
 
 class Coordinateur(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nom = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=True,
+                           default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
 
     def __repr__(self):
         return f"Coordo : {self.nom}, {self.email}"
 
+
 class Email_OP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     from_ = db.Column(db.String(120), nullable=False)
-    object_ = db.Column(db.String(120), nullable=False)
-    body_ = db.Column(db.Text, nullable=False)
+    to_ = db.Column(db.String(120), nullable=False)
     date_ = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('accueillant.id'), nullable=False)
+    subject_ = db.Column(db.String(120), nullable=False)
+    body_ = db.Column(db.Text, nullable=False)
+    acc_id = db.Column(db.Integer, db.ForeignKey(
+        'accueillant.id'), nullable=True)
 
     def __repr__(self):
         return f"Mail : {self.from_}, {self.object_}"
- 
+
+    def __init__(self, from_, to_, date_, subject_, body_, acc_id_):
+        self.from_ = from_
+        self.to_ = to_
+        self.date_ = date_
+        self.subject_ = subject_
+        self.body_ = body_
+        self.acc_id = acc_id_

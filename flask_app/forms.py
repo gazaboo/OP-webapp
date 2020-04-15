@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_app.models import Coordinateur
 
@@ -31,5 +31,19 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login!')
     
 class SendMailForm(FlaskForm):
-    body = StringField('Message', validators=[DataRequired()])
-    submit = SubmitField('Envoyer!')
+    body = TextAreaField('Message', validators=[DataRequired()])
+    object_ = StringField('Objet', validators=[DataRequired()])
+    destinataire = StringField('Destinataire', validators=[DataRequired()])
+    destinataire_copie = StringField('CC')
+    submit = SubmitField('Envoyer')
+
+
+class AccueillantInfoForm(FlaskForm):
+    disponibilite = StringField('Disponibilité')
+    nom = StringField('Nom', validators=[DataRequired()])
+    tel = StringField('Téléphone')
+    adresse = StringField('Adresse')
+    email = StringField('Email')
+    next_action = TextAreaField('Prochaine Action')
+    remarques = TextAreaField('Remarques')    
+    submit = SubmitField("OK")

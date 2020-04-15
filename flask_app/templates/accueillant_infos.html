@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-row">
+                <div class="col-10">
+                    <legend class="border-bottom mb-4"> {{ legend }}</legend>
+                </div>
+                {% if accueillant %}
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger btn-sm m-1 py-0" style="font-size: 0.5em;"
+                        data-toggle="modal" data-target="#deleteModal">
+                        Supprimer
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.nom.label(class="form-control-label") }}
+                    {% if form.nom.errors %}
+                    {{ form.nom(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.nom.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.nom(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.tel.label(class="form-control-label") }}
+                    {% if form.tel.errors %}
+                    {{ form.tel(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.tel.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.tel(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                    {{ form.email(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.email(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.disponibilite.label(class="form-control-label") }}
+                    {% if form.disponibilite.errors %}
+                    {{ form.disponibilite(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.disponibilite.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.disponibilite(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form.adresse.label(class="form-control-label") }}
+                {% if form.adresse.errors %}
+                {{ form.adresse(class="form-control form-control-sm is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.adresse.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.adresse(class="form-control form-control-sm") }}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.next_action.label(class="form-control-label") }}
+                {% if form.next_action.errors %}
+                {{ form.next_action(class="form-control form-control-sm is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.next_action.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.next_action(class="form-control form-control-sm") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.remarques.label(class="form-control-label") }}
+                {% if form.remarques.errors %}
+                {{ form.remarques(class="form-control form-control-sm is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.remarques.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.remarques(class="form-control form-control-sm") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info")}}
+        </div>
+
+    </form>
+</div>
+
+{% if accueillant %}
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Suppression</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form action="{{url_for('delete_accueillant', acc_id=accueillant.id)}}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Supprimer">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
