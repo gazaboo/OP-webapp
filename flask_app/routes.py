@@ -14,10 +14,11 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/liste_accueillants', methods=['GET', 'POST'])
 @login_required
-def home():
+def liste_accueillants():
     liste_accueillants = Accueillant.query.all()
+    dict_emails = get_conversations(Email_OP.query.distinct())
 
     # Send email
     form = SendMailForm()
@@ -25,7 +26,10 @@ def home():
         mailer.send_email_simple(
             'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
 
-    return render_template('home.html', accueillants=liste_accueillants, title="Accueillants", form=form)
+    return render_template('liste_accueillants.html', accueillants=liste_accueillants,
+                           emails=dict_emails,
+                           title="Accueillants",
+                           form=form)
 
 
 @app.route('/about')
@@ -36,7 +40,7 @@ def about():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('liste_accueillants'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
@@ -54,14 +58,14 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('liste_accueillants'))
     form = LoginForm()
     if form.validate_on_submit():
         coordo = Coordinateur.query.filter_by(email=form.email.data).first()
         if coordo and bcrypt.check_password_hash(coordo.password, form.password.data):
             login_user(coordo, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(next_page) if next_page else redirect(url_for('liste_accueillants'))
         else:
             flash('Login Unsuccessfull, check email and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -88,7 +92,7 @@ def new_accueillant():
         db.session.add(accueillant)
         db.session.commit()
         flash('Accueillant créé', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('liste_accueillants'))
     return render_template('accueillant_infos.html',
                            title='create_modif_accueillant',
                            legend='Nouvel Accueillant',
@@ -110,7 +114,7 @@ def update_accueillant(acc_id):
         acc.next_action = form.next_action.data
         acc.remarques = form.remarques.data
         db.session.commit()
-        return redirect(url_for('home'))
+        return redirect(url_for('liste_accueillants'))
     elif request.method == 'GET':
         form.nom.data = acc.nom
         form.tel.data = acc.tel
@@ -133,8 +137,12 @@ def delete_accueillant(acc_id):
     db.session.delete(acc)
     db.session.commit()
     flash(f'Accueillant "{acc.nom}" enlevé de la liste', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('liste_accueillants'))
 
+
+#######################
+# Pour la mise en route
+#######################
 
 @app.route('/synchronize', methods=['GET', 'POST'])
 @login_required
@@ -155,15 +163,20 @@ def synchronize():
         except:
             db.session.close()
 
-    form = SendMailForm()
-    liste_accueillants = Accueillant.query.all()
-    return render_template('home.html', accueillants=liste_accueillants, title="Accueillants", form=form)
+    return redirect(url_for('liste_accueillants'))
 
 
-@app.route('/synchronize_email', methods=['GET', 'POST'])
+@app.route('/synchronize_email')
 @login_required
 def synchronize_email():
-    mails_roundcube = get_mail_from_last(5)
+    mails_roundcube = get_mail_from_last(90)
     mail_dict = get_conversations(mails_roundcube)
-    print(mail_dict)
+    for liste_emails in mail_dict.values():
+        for mail in liste_emails:
+            try:
+                db.session.add(mail)
+                db.session.commit()
+            except:
+                db.session.close()
+
     return render_template('index.html', mails=mail_dict, title="Index")

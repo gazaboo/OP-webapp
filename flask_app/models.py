@@ -47,19 +47,22 @@ class Email_OP(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     from_ = db.Column(db.String(120), nullable=False)
     to_ = db.Column(db.String(120), nullable=False)
-    date_ = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_ = db.Column(db.DateTime, nullable=False, unique=True)
     subject_ = db.Column(db.String(120), nullable=False)
     body_ = db.Column(db.Text, nullable=False)
-    acc_id = db.Column(db.Integer, db.ForeignKey(
-        'accueillant.id'), nullable=True)
+    # acc_id_ = db.Column(db.Integer, db.ForeignKey(
+    #     'accueillant.id'), nullable=True)
 
     def __repr__(self):
-        return f"Mail : {self.from_}, {self.object_}"
+        return f"Mail : {self.from_}, {self.subject_}"
 
-    def __init__(self, from_, to_, date_, subject_, body_, acc_id_):
+    # def set_accueillant(acc_id):
+    #     self.acc_id_ = acc_id
+
+    def __init__(self, from_, to_, date_, subject_, body_):
         self.from_ = from_
         self.to_ = to_
         self.date_ = date_
         self.subject_ = subject_
         self.body_ = body_
-        self.acc_id = acc_id_
+        # self.acc_id_ = acc_id_

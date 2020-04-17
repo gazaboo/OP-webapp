@@ -12,6 +12,7 @@ import os
 from collections import namedtuple
 
 from env import LOP_PASS, LOP_LOGIN, LOP_HOST
+from flask_app.models import Email_OP
 
 
 def updateDB(sheet):
@@ -126,12 +127,16 @@ def get_mail_from_last(num_days):
                 Q(date_gte=dt.date.today() - dt.timedelta(days=num_days)))
             for mail in mails:
                 try:
-                    query_result = EmailOP(
-                        mail.from_, mail.to, mail.date, mail.subject, mail.html)
+                    body = mail.html if (len(mail.html) > 0) else mail.text
+                    query_result = Email_OP(from_=mail.from_,
+                                            to_='; '.join(mail.to),
+                                            date_=mail.date,
+                                            subject_=mail.subject,
+                                            body_=body)
                     mails_roundcube = mails_roundcube + [query_result]
                 except Exception as e:
-                    print(e)
-                    print('erreur :', mail.from_, " date : ", mail.date)
+                    print('erreur :', e, 'from : ',
+                          mail.from_, " date : ", mail.date)
     return mails_roundcube
 
 

@@ -43,3 +43,8 @@ h1 {
 .p-custom {
     margin-bottom: 2px;
 }
+
+.email-content * {
+    text-align: right;
+    font-size: small;
+}
