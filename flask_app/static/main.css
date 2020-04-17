@@ -1,6 +1,7 @@
 body {
     background: #fafafa;
     color: #333333;
+    font-family: Verdana, Geneva, sans-serif !important;
 }
 
 h1 {
@@ -44,7 +45,30 @@ h1 {
     margin-bottom: 2px;
 }
 
-.email-content * {
+.email-content-left>* {
+    text-align: left;
+    font-size: small;
+}
+
+.email-content-right>* {
     text-align: right;
     font-size: small;
+}
+
+.from-us {
+    background-color: rgba(255, 227, 133, 0.26);
+}
+
+.from-us:hover {
+    background-color: rgba(255, 227, 133, 0.46);
+}
+
+.media-custom {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.outils-coordo {
+    position: fixed;
 }

@@ -5,7 +5,7 @@
 
 <h1>Liste des accueillants</h1>
 {% for accueillant in accueillants %}
-<article class="media content-section">
+<article class="media-custom content-section">
     <div class="media-body">
         <div class="row">
             <div class="col-sm-10">
@@ -51,34 +51,24 @@
         <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
             data-target="#emails-{{accueillant.id}}">Historique des mails</button>
         <div id="emails-{{accueillant.id}}" class="collapse">
-            <!-- {% for adress, liste_mails in emails.items()%}
-            {% if adress.lower() in accueillant.email.lower() %}
-            {% for m in liste_mails %}
-            <article class="content-section">
-                <div class="email-content">
-                    <p class='text-muted small mb-0'> From : {{ m.from_ }}</p>
-                    <p class='text-muted small mb-0'> To : {{ m.to_ }}</p>
-                    <p class='text-muted small mb-0'> Date : {{ m.date_.strftime("Le %d %b %Y, à %H:%M:%S") }}</p>
-                    <p class='text-muted small mb-0'> Subject : {{ m.subject_ }}</p>
-                    <p class='small mt-1'> {{ m.body_ | safe}}</p>
+            {% for m in emails[accueillant.email.lower()] %}
+            {% if m.from_ == 'grenoble@louvreporte.org' %}
+            <article class="content-section from-us">
+                <div class="email-content-left">
+                    {% else %}
+                    <article class="content-section from-them">
+                        <div class="email-content-right">
+                            {% endif%}
+                            <p class='text-muted small mb-0'> From : {{ m.from_ }}</p>
+                            <p class='text-muted small mb-0'> Date : {{ m.date_.strftime("Le %d %b %Y, à %H:%M:%S") }}
+                            </p>
+                            <p class='text-muted small mb-0'> Subject : {{ m.subject_ }}</p>
+                            <p class='small mt-1'> {{ m.body_ | safe}}</p>
+                        </div>
+                    </article>
+                    {% endfor %}
                 </div>
-            </article>
-            {% endfor %}
-            {% endif%}
-            {% endfor %} -->
-            {% for m in emails[accueillant.email] %}
-            <article class="content-section">
-                <div class="email-content">
-                    <p class='text-muted small mb-0'> From : {{ m.from_ }}</p>
-                    <p class='text-muted small mb-0'> To : {{ m.to_ }}</p>
-                    <p class='text-muted small mb-0'> Date : {{ m.date_.strftime("Le %d %b %Y, à %H:%M:%S") }}</p>
-                    <p class='text-muted small mb-0'> Subject : {{ m.subject_ }}</p>
-                    <p class='small mt-1'> {{ m.body_ | safe}}</p>
-                </div>
-            </article>
-            {% endfor %}
         </div>
-    </div>
 
 </article>
 {% endfor %}

@@ -169,7 +169,22 @@ def synchronize():
 @app.route('/synchronize_email')
 @login_required
 def synchronize_email():
+    from bs4 import BeautifulSoup as soup
     mails_roundcube = get_mail_from_last(90)
+    for m in mails_roundcube:
+        dom = soup(m.body_, 'html.parser')
+        quote = dom.find_all("div", class_="gmail_quote") \
+            + dom.findAll('blockquote')  \
+            + dom.findAll('yahoo_quoted')  \
+            + dom.findAll('x_gmail_quote')
+
+        for tag in quote:
+            try:
+                tag.decompose()
+            except:
+                pass
+        m.body_ = str(dom)
+
     mail_dict = get_conversations(mails_roundcube)
     for liste_emails in mail_dict.values():
         for mail in liste_emails:
