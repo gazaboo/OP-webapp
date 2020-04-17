@@ -47,12 +47,12 @@ h1 {
 
 .email-content-left>* {
     text-align: left;
-    font-size: small;
+    font-size: x-small;
 }
 
 .email-content-right>* {
     text-align: right;
-    font-size: small;
+    font-size: x-small;
 }
 
 .from-us {
@@ -63,12 +63,27 @@ h1 {
     background-color: rgba(255, 227, 133, 0.46);
 }
 
-.media-custom {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-}
 
 .outils-coordo {
     position: fixed;
+}
+
+.email-content-right>*>* {
+    text-align: right;
+    font-size: x-small;
+}
+
+.email-content-left>*>* {
+    text-align: right;
+    font-size: x-small;
+}
+
+.email-content-right>*>*>* {
+    text-align: right;
+    font-size: x-small;
+}
+
+.email-content-left>*>*>* {
+    text-align: right;
+    font-size: x-small;
 }
