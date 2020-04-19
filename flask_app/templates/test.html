@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% for acc in accueillis %}
+<p> {{ acc.nom }}</p>
+<p> Accueilli par : </p>
+{% for accueillant in acc.accueillants %}
+<p> {{ accueillant.nom }} </p>
+{% endfor %}
+{% endfor %}
+{% endblock content %}

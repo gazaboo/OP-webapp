@@ -1,6 +1,45 @@
 from flask_login import UserMixin
 from datetime import datetime
 from flask_app import db, login_manager
+from sqlalchemy.orm import relationship, backref
+
+
+
+Accueil = db.Table('accueils',
+                        db.Column('id',
+                                db.Integer,
+                                primary_key=True),
+                        db.Column('accueillant_id',
+                                db.Integer,
+                                db.ForeignKey('accueillants.id', ondelete="cascade")),
+                        db.Column('accueilli_id',
+                                db.Integer,
+                                db.ForeignKey('accueillis.id', ondelete="cascade")))
+
+# class Employee(db.Model):
+#     __tablename__ = 'employees'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.Text)
+#     years_at_company = db.Column(db.Integer)
+#     departments = db.relationship("Department",
+#                                   secondary=EmployeeDepartment,
+#                                   backref=db.backref('employees'))
+
+#     def __init__(self, name, years_at_company):
+#         self.name = name
+#         self.years_at_company = years_at_company
+
+# class Department(db.Model):
+#     __tablename__ = 'departments'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.Text)
+
+#     def __init__(self, name):
+#         self.name = name
+
+
 
 
 @login_manager.user_loader
@@ -9,6 +48,7 @@ def load_coordinateur(coordo_id):
 
 
 class Accueillant(db.Model):
+    __tablename__ = 'accueillants'
     id = db.Column(db.Integer, primary_key=True)
     disponibilite = db.Column(db.String(120), unique=False, nullable=True)
     nom = db.Column(db.String(120), unique=True, nullable=False)
@@ -17,6 +57,9 @@ class Accueillant(db.Model):
     email = db.Column(db.String(120), unique=False, nullable=True)
     next_action = db.Column(db.Text, unique=False, nullable=True)
     remarques = db.Column(db.Text, unique=False, nullable=True)
+    accueillis = db.relationship("Accueilli", 
+                                    secondary=Accueil, 
+                                    backref= db.backref('accueillants'))
 
     def __repr__(self):
         return f"Accueillant : {self.nom}, {self.email}"
@@ -43,21 +86,35 @@ class Coordinateur(db.Model, UserMixin):
         return f"Coordo : {self.nom}, {self.email}"
 
 
+class Accueilli(db.Model):
+    __tablename__ = 'accueillis'
+    id = db.Column(db.Integer, primary_key=True)
+    nom = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=False, nullable=True)
+    tel = db.Column(db.String(120), unique=False, nullable=True)
+    remarques = db.Column(db.Text, unique=False, nullable=True)
+
+    def __init__(self, nom, email, tel, remarques):
+        self.nom = nom
+        self.email = email
+        self.tel = tel
+        self.remarques = remarques
+
+    def __repr__(self):
+        return f"Accueilli : {self.nom}, {self.email}"
+
+
 class Email_OP(db.Model):
+    __tablename__ = 'emails_op'
     id = db.Column(db.Integer, primary_key=True)
     from_ = db.Column(db.String(120), nullable=False)
     to_ = db.Column(db.String(120), nullable=False)
     date_ = db.Column(db.DateTime, nullable=False, unique=True)
     subject_ = db.Column(db.String(120), nullable=False)
     body_ = db.Column(db.Text, nullable=False)
-    # acc_id_ = db.Column(db.Integer, db.ForeignKey(
-    #     'accueillant.id'), nullable=True)
 
     def __repr__(self):
         return f"Mail : {self.from_}, {self.subject_}"
-
-    # def set_accueillant(acc_id):
-    #     self.acc_id_ = acc_id
 
     def __init__(self, from_, to_, date_, subject_, body_):
         self.from_ = from_
@@ -65,4 +122,16 @@ class Email_OP(db.Model):
         self.date_ = date_
         self.subject_ = subject_
         self.body_ = body_
-        # self.acc_id_ = acc_id_
+
+
+# class Accueil(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     accueillant_id = db.Column(db.Integer, db.ForeignKey('accueillant.id'))
+#     accueilli_id = db.Column(db.Integer, db.ForeignKey('accueilli.id'))
+
+#     accueillant = relationship(Accueillant, backref=backref("accueil", cascade="all, delete-orphan"))
+#     accueilli = relationship(Accueilli, backref=backref("accueil", cascade="all, delete-orphan"))
+
+#     def __init__(self, from_, to_, date_, subject_, body_):
+#         self.accueillant_id = accueillant_id
+#         self.accueilli_id = accueilli_id

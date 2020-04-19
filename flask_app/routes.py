@@ -1,8 +1,8 @@
 from flask_app import app, db, bcrypt
 import flask_app.utils_mailer as mailer
-from flask_app.forms import SendMailForm, RegistrationForm, LoginForm, AccueillantInfoForm
+from flask_app.forms import SendMailForm, RegistrationForm, LoginForm, AccueillantInfoForm, AccueilliInfoForm
 from flask import render_template, url_for, flash, redirect, request
-from flask_app.models import Coordinateur, Accueillant, Email_OP
+from flask_app.models import Coordinateur, Accueillant, Email_OP, Accueilli
 from collections import namedtuple
 from flask_login import login_user, logout_user, current_user, login_required
 from env import GOOGLE_APP_CREDS
@@ -12,6 +12,12 @@ from flask_app.utils_mailer import get_mail_from_last, get_conversations
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/liste_accueillis')
+def liste_accueillis():
+    accueillis = Accueilli.query.all()
+    return render_template('test.html', accueillis=accueillis)
 
 
 @app.route('/liste_accueillants', methods=['GET', 'POST'])
@@ -100,6 +106,23 @@ def new_accueillant():
                            form=form,
                            accueillant=None)
 
+@app.route('/accueilli/new', methods=['GET', 'POST'])
+@login_required
+def new_accueilli():
+    form = AccueilliInfoForm()
+    if form.validate_on_submit():
+        accueilli = Accueilli(nom=form.nom.data,
+                                  email=form.email.data,
+                                  tel=form.tel.data,
+                                  remarques=form.remarques.data)
+        db.session.add(accueilli)
+        db.session.commit()
+        flash(f'Accueilli créé : {accueilli.nom}', 'success')
+        return redirect(url_for('liste_accueillis'))
+    return render_template('accueilli_infos.html',
+                           title='create_modif_accueillant',
+                           legend='Nouvel Accueillant',
+                           form=form)
 
 @app.route('/accueillant/<int:acc_id>', methods=['GET', 'POST'])
 @login_required

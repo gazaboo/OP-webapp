@@ -47,3 +47,11 @@ class AccueillantInfoForm(FlaskForm):
     next_action = TextAreaField('Prochaine Action')
     remarques = TextAreaField('Remarques')    
     submit = SubmitField("OK")
+
+
+class AccueilliInfoForm(FlaskForm):
+    nom = StringField('Nom', validators=[DataRequired()])
+    tel = StringField('Téléphone')
+    email = StringField('Email')
+    remarques = TextAreaField('Remarques')    
+    submit = SubmitField("OK")

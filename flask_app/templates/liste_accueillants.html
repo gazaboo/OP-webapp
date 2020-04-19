@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-
 <h1>Liste des accueillants</h1>
 {% for accueillant in accueillants %}
 <article class="media-custom content-section">
@@ -63,7 +61,7 @@
                             <p class='text-muted small mb-0'> From : {{ m.from_ }}</p>
                             <p class='text-muted small mb-0'> Date : {{ m.date_.strftime("Le %d %b %Y, à %H:%M:%S") }}
                             </p>
-                            <p class='text-muted small mb-0'> Subject : {{ m.subject_ }}</p>
+                            <p class='text-muted small mb-0'> Object : {{ m.subject_ }}</p>
                             <p class='small mt-1'> {{ m.body_ | safe}}</p>
                         </div>
                     </article>
