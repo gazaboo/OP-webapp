@@ -94,7 +94,8 @@
                 <div class="mycheckbox">
                     {% for accueilli in accueillis %}
                     <div class="custom-control custom-checkbox ">
-                        <input type="checkbox" class="custom-control-input" id="check-{{accueilli.nom}}">
+                        <input type="checkbox" name="check" value={{accueilli.id}} class="custom-control-input"
+                            id="check-{{accueilli.nom}}">
                         <label class="custom-control-label" for="check-{{accueilli.nom}}"> {{ accueilli.nom }}</label>
                     </div>
                     {% endfor %}

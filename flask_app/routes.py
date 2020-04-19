@@ -17,7 +17,7 @@ def index():
 @app.route('/liste_accueillis')
 def liste_accueillis():
     accueillis = Accueilli.query.all()
-    return render_template('test.html', accueillis=accueillis)
+    return render_template('liste_accueillis.html', accueillis=accueillis)
 
 
 @app.route('/liste_accueillants', methods=['GET', 'POST'])
@@ -98,6 +98,11 @@ def new_accueillant():
                                   email=form.email.data,
                                   next_action=form.next_action.data,
                                   remarques=form.remarques.data)
+
+        values = request.form.getlist('check')
+        list_acc = [Accueilli.query.get(v) for v in values]
+        accueillant.accueillis.extend(list_acc) 
+        
         db.session.add(accueillant)
         db.session.commit()
         flash('Accueillant créé', 'success')
@@ -132,7 +137,7 @@ def new_accueilli():
 def update_accueillant(acc_id):
     acc = Accueillant.query.get_or_404(acc_id)
     form = AccueillantInfoForm()
-    form.accueillis.choices = [(a.id, a.nom) for a in Accueilli.query.all()]
+    accueillis = Accueilli.query.all()
 
     if form.validate_on_submit():
         acc.nom = form.nom.data
@@ -141,6 +146,9 @@ def update_accueillant(acc_id):
         acc.email = form.email.data
         acc.next_action = form.next_action.data
         acc.remarques = form.remarques.data
+        values = request.form.getlist('check')
+        list_acc = [Accueilli.query.get(v) for v in values]
+        acc.accueillis.extend(list_acc) 
         db.session.commit()
         return redirect(url_for('liste_accueillants'))
     elif request.method == 'GET':
@@ -155,7 +163,8 @@ def update_accueillant(acc_id):
                            title='create_modif_accueillant',
                            legend='Modifier les Infos',
                            form=form,
-                           accueillant=acc)
+                           accueillant=acc,
+                           accueillis=accueillis)
 
 
 @app.route('/accueillant/<int:acc_id>/delete', methods=['POST'])

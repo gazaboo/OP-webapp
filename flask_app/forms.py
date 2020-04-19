@@ -44,7 +44,6 @@ class AccueillantInfoForm(FlaskForm):
     tel = StringField('Téléphone')
     adresse = StringField('Adresse')
     email = StringField('Email')
-    email = StringField('Email')
     accueillis = SelectMultipleField(u'Accueilli', choices=[])
     next_action = TextAreaField('Prochaine Action')
     remarques = TextAreaField('Remarques')    

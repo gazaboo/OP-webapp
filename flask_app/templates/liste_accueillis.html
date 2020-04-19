@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Liste des accueillis</h1>
-{% for accueilli in accueillis %}
-<p> {{ accueillis.nom }}</p>
-{% endfor%}
+{% for acc in accueillis %}
+<div class='mt-5'>
+    {{ acc.nom }} est accueilli par :
+    {% for accueillant in acc.accueillants %}
+    {{ accueillant.nom }}
+    {% endfor %}
+    {% endfor %}
+</div>
 {% endblock content %}

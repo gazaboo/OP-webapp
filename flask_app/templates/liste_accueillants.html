@@ -20,6 +20,11 @@
                 </button>
             </div>
         </div>
+        <div class="row">
+            {% for a in accueillant.accueillis %}
+            <button type="button" class="btn btn-outline-info btn-xs m-1 py-0">{{ a.nom }}</button>
+            {% endfor%}
+        </div>
         <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
             data-target="#info-{{accueillant.id}}">Informations</button>
         <div id="info-{{accueillant.id}}" class="collapse show">
