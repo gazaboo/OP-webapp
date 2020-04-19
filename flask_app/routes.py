@@ -26,7 +26,8 @@ def liste_accueillants():
         mailer.send_email_simple(
             'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
 
-    return render_template('liste_accueillants.html', accueillants=liste_accueillants,
+    return render_template('liste_accueillants.html',
+                           accueillants=liste_accueillants,
                            emails=dict_emails,
                            title="Accueillants",
                            form=form)
@@ -153,8 +154,22 @@ def synchronize():
     coordo_sheet = client.open(
         "flask-Coordo/Mediation").worksheet("Accueillants")
     liste_accueillants_raw = coordo_sheet.get_all_values()
-    liste_accueillants_to_add = [Accueillant(
-        *row[:7]) for i, row in enumerate(liste_accueillants_raw) if i > 1]
+
+    # Handle poorly formatted emails
+    import re
+    emails_re = "([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)"
+    tel_re = "([0-9][0-9])"
+    liste_accueillants_to_add = \
+        [Accueillant(
+            disponibilite=row[0],
+            nom=row[1].title(),
+            tel=''.join("; " if i % 15 == 0 else char for i, char in enumerate(
+                ".".join(re.findall(tel_re, row[2])), 1)),
+            adresse=row[3],
+            email="; ".join(re.findall(emails_re, row[4])).lower(),
+            next_action=row[5],
+            remarques=row[6])
+            for i, row in enumerate(liste_accueillants_raw) if i > 1]
 
     for acc in liste_accueillants_to_add:
         try:
@@ -177,10 +192,11 @@ def synchronize_email():
         dom = soup(m.body_, 'html.parser')
         quote = dom.find_all("div", class_="gmail_quote") \
             + dom.findAll('blockquote')  \
-            + dom.findAll('yahoo_quoted')  \
-            + dom.findAll('x_gmail_quote') \
-            + dom.findAll('__QUOTED_TEXT__') \
-            + dom.findAll('__HEADERS__')
+            + dom.findAll("div", class_='yahoo_quoted')  \
+            + dom.findAll("div", class_='x_gmail_quote') \
+            + dom.findAll('div', attrs={"data-marker": "__QUOTED_TEXT__"}) \
+            + dom.findAll('div', attrs={"data-marker": "__HEADERS__"}) \
+            + dom.findAll('div', attrs={"data-marker": "__SIG_PRE__"})
 
         for tag in quote:
             try:

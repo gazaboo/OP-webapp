@@ -51,8 +51,9 @@
         <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
             data-target="#emails-{{accueillant.id}}">Historique des mails</button>
         <div id="emails-{{accueillant.id}}" class="collapse">
-            {% for m in emails[accueillant.email.lower()] %}
-            {% if m.from_ == 'grenoble@louvreporte.org' %}
+            {% for email_acc in accueillant.email.split('; ') %}
+            {% for m in emails[email_acc] %}
+            {% if 'grenoble@louvreporte.org' in m.from_ %}
             <article class="content-section from-us">
                 <div class="email-content-left">
                     {% else %}
@@ -67,79 +68,78 @@
                         </div>
                     </article>
                     {% endfor %}
+                    {% endfor %}
                 </div>
-        </div>
+            </article>
+            {% endfor %}
 
-</article>
-{% endfor %}
-
-<!-- Send mail Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Envoyer un mail</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form method="POST" action="">
-                    {{ form.hidden_tag() }}
-                    <fieldset class=" form-group">
-                        <div class="form-group">
-                            {{ form.destinataire.label(class="form-control-label") }}
-
-                            {% if form.destinataire.errors %}
-                            {{ form.destinataire(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.destinataire.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor%}
-                            </div>
-                            {% else %}
-                            {{ form.destinataire(class="form-control form-control-lg") }}
-                            {% endif %}
+            <!-- Send mail Modal -->
+            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Envoyer un mail</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="form-group">
-                            {{ form.object_.label(class="form-control-label") }}
+                        <div class="modal-body">
+                            <form method="POST" action="">
+                                {{ form.hidden_tag() }}
+                                <fieldset class=" form-group">
+                                    <div class="form-group">
+                                        {{ form.destinataire.label(class="form-control-label") }}
 
-                            {% if form.object_.errors %}
-                            {{ form.object_(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.object_.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor%}
-                            </div>
-                            {% else %}
-                            {{ form.object_(class="form-control form-control-lg") }}
-                            {% endif %}
+                                        {% if form.destinataire.errors %}
+                                        {{ form.destinataire(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.destinataire.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                        {% else %}
+                                        {{ form.destinataire(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.object_.label(class="form-control-label") }}
+
+                                        {% if form.object_.errors %}
+                                        {{ form.object_(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.object_.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                        {% else %}
+                                        {{ form.object_(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.body.label(class="form-control-label") }}
+
+                                        {% if form.body.errors %}
+                                        {{ form.body(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.body.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor%}
+                                        </div>
+                                        {% else %}
+                                        {{ form.body(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    </div>
+                                </fieldset>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            {{ form.body.label(class="form-control-label") }}
-
-                            {% if form.body.errors %}
-                            {{ form.body(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.body.errors %}
-                                <span>{{ error }}</span>
-                                {% endfor%}
-                            </div>
-                            {% else %}
-                            {{ form.body(class="form-control form-control-lg") }}
-                            {% endif %}
+                        <div class="modal-footer">
+                            {{ form.submit(class="btn btn-success")}}
+                            <button type="bulton" class="btn btn-primary">Sauvegarder</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
-                    </fieldset>
-                </form>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                {{ form.submit(class="btn btn-success")}}
-                <button type="bulton" class="btn btn-primary">Sauvegarder</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-{% endblock content %}
+            {% endblock content %}
