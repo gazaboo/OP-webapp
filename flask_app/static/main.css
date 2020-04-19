@@ -87,3 +87,13 @@ h1 {
     text-align: right;
     font-size: x-small;
 }
+
+.mycheckbox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.mycheckbox>div {
+    margin-right: 1rem;
+}

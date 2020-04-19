@@ -88,6 +88,8 @@ def logout():
 @login_required
 def new_accueillant():
     form = AccueillantInfoForm()
+    accueillis = Accueilli.query.all()
+
     if form.validate_on_submit():
         accueillant = Accueillant(disponibilite=form.disponibilite.data,
                                   nom=form.nom.data,
@@ -104,7 +106,8 @@ def new_accueillant():
                            title='create_modif_accueillant',
                            legend='Nouvel Accueillant',
                            form=form,
-                           accueillant=None)
+                           accueillant=None,
+                           accueillis= accueillis)
 
 @app.route('/accueilli/new', methods=['GET', 'POST'])
 @login_required
@@ -120,8 +123,8 @@ def new_accueilli():
         flash(f'Accueilli créé : {accueilli.nom}', 'success')
         return redirect(url_for('liste_accueillis'))
     return render_template('accueilli_infos.html',
-                           title='create_modif_accueillant',
-                           legend='Nouvel Accueillant',
+                           title='create_modif_accueilli',
+                           legend='Nouvel Accueilli',
                            form=form)
 
 @app.route('/accueillant/<int:acc_id>', methods=['GET', 'POST'])
@@ -129,6 +132,7 @@ def new_accueilli():
 def update_accueillant(acc_id):
     acc = Accueillant.query.get_or_404(acc_id)
     form = AccueillantInfoForm()
+    form.accueillis.choices = [(a.id, a.nom) for a in Accueilli.query.all()]
 
     if form.validate_on_submit():
         acc.nom = form.nom.data

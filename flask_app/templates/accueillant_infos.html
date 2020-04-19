@@ -89,6 +89,19 @@
                 {% endif %}
             </div>
 
+            <div class="form-group ">
+                {{ form.accueillis.label(class="form-control-label") }}
+                <div class="mycheckbox">
+                    {% for accueilli in accueillis %}
+                    <div class="custom-control custom-checkbox ">
+                        <input type="checkbox" class="custom-control-input" id="check-{{accueilli.nom}}">
+                        <label class="custom-control-label" for="check-{{accueilli.nom}}"> {{ accueilli.nom }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
             <div class="form-group">
                 {{ form.next_action.label(class="form-control-label") }}
                 {% if form.next_action.errors %}

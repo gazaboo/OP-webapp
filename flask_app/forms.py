@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_app.models import Coordinateur
 
@@ -44,6 +44,8 @@ class AccueillantInfoForm(FlaskForm):
     tel = StringField('Téléphone')
     adresse = StringField('Adresse')
     email = StringField('Email')
+    email = StringField('Email')
+    accueillis = SelectMultipleField(u'Accueilli', choices=[])
     next_action = TextAreaField('Prochaine Action')
     remarques = TextAreaField('Remarques')    
     submit = SubmitField("OK")
