@@ -15,38 +15,7 @@ from env import LOP_PASS, LOP_LOGIN, LOP_HOST
 from flask_app.models import Email_OP
 
 
-def updateDB(sheet):
-    sheet_values_raw = sheet.get_all_values()
-
-
-def get_planning(sheet):
-    ######################################
-    # Process the data
-    begin_row = 0
-    for i, val in enumerate(sheet.get_all_values()):
-        if any(list(map(lambda x: 'ACCUEIL' in x, val))):
-            begin_row = i+1
-            break
-
-    mail_content_all_cols = sheet.get_all_values()[begin_row:]
-    mail_content = [x[:3] for x in mail_content_all_cols]
-
-    html = "<table class=mystyle>"
-    html += "<tr>"
-    html += "\n".join(map(lambda x: "<th>" + x + "</th>", mail_content[0]))
-    html += "<tr>"
-    for row in mail_content[1:]:
-        html += "<tr>"
-        # Make <tr>-pairs, then join them.
-        html += "\n".join(map(lambda x: "<td>" + x + "</td>", row))
-        html += "</tr>"
-    html += "</table>"
-
-    return html
-
-
 def send_email(info_accueil, html, email_info):
-    import os
     # email_host = os.getenv('EMAIL_HOST')
 
     print(

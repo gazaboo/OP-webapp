@@ -10,7 +10,7 @@
                 <h3 class="article-title "> <span class="title-custom"> {{ accueillant.nom }} </span> </h3>
             </div>
             <div class="col-sm-2">
-                <a href="{{ url_for('update_accueillant', acc_id=accueillant.id) }}"
+                <a href="{{ url_for('accueillants.update_accueillant', acc_id=accueillant.id) }}"
                     class="btn btn-warning btn-sm m-1 py-0" role="button" style="font-size: 0.5em;" aria-pressed="true">
                     Modifier
                 </a>

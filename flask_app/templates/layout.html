@@ -21,7 +21,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="{{ url_for('index') }}">Ouvre-Porte Coordination</a>
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">Ouvre-Porte Coordination</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -30,14 +30,15 @@
       <ul class="navbar-nav">
         {% if current_user.is_authenticated %}
         <li class="nav-item active">
-          <a class="nav-link" href="{{url_for('logout')}}">Logout <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{url_for('coordinateurs.logout')}}">Logout <span
+              class="sr-only">(current)</span></a>
         </li>
         {% else %}
         <li class="nav-item active">
-          <a class="nav-link" href="{{url_for('login')}}">Login <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{url_for('coordinateurs.login')}}">Login <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('register')}}">Register</a>
+          <a class="nav-link" href="{{url_for('coordinateurs.register')}}">Register</a>
         </li>
         {% endif %}
       </ul>
@@ -63,17 +64,19 @@
           <h4>Outils du Coordo</h4>
           <ul class="list-group">
             <li class="nav-item list-group-item list-group-item-light">
-              <a class="nav-link small p-0" href="{{url_for('new_accueillant')}}">Ajouter un accueillant
+              <a class="nav-link small p-0" href="{{url_for('accueillants.new_accueillant')}}">Ajouter un accueillant
               </a>
             </li>
             <li class="nav-item list-group-item list-group-item-light">
-              <a class="nav-link small p-0" href="{{url_for('liste_accueillants')}}">Voir la liste des accueillants </a>
+              <a class="nav-link small p-0" href="{{url_for('accueillants.liste_accueillants')}}">Voir la liste des
+                accueillants </a>
             </li>
             <li class="nav-item list-group-item list-group-item-light">
-              <a class="nav-link small p-0" href="{{url_for('new_accueilli')}}">Ajouter un accueilli </a>
+              <a class="nav-link small p-0" href="{{url_for('boucles_accueil.new_accueilli')}}">Ajouter un accueilli
+              </a>
             </li>
             <li class="nav-item list-group-item list-group-item-light">
-              <a class="nav-link small p-0" href="{{url_for('liste_accueillis')}}">Voir les boucles </a>
+              <a class="nav-link small p-0" href="{{url_for('boucles_accueil.liste_accueillis')}}">Voir les boucles </a>
             </li>
             <li class="list-group-item list-group-item-light">Rechercher</li>
             <li class="list-group-item list-group-item-light">Calendars</li>
