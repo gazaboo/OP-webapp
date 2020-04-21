@@ -97,3 +97,33 @@ h1 {
 .mycheckbox>div {
     margin-right: 1rem;
 }
+
+.front-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.front-page>h1 {
+    text-align: center;
+}
+
+.front-page>img {
+    width: 35%;
+    margin-top: 2rem;
+}
+
+
+.media-body {
+    margin: 1px;
+}
+
+.wrapper {
+    padding: 0.2rem;
+}
+
+.testjs {
+    color: red;
+}

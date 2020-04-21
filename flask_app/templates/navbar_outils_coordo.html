@@ -1,0 +1,34 @@
+<div class="outils-coordo content-section">
+    <h4>Outils du Coordo</h4>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-light">
+            Organisation en colonnes
+        </li>
+        <li class="list-group-item list-group-item-light">
+            <button class="btn btn-warning" value="1" onclick="num_colonnes(this)">:</button>
+            <button class="btn btn-warning" value="2" onclick="num_colonnes(this)">::</button>
+            <button class="btn btn-warning" value="3" onclick="num_colonnes(this)">:::</button>
+        </li>
+
+    </ul>
+    <div class="list-group">
+        <button class="btn btn-info" value="infos_mails" onclick="show_infos(this)"> Show mails</button>
+        <button class="btn btn-info" value="infos_remarques" onclick="show_infos(this)"> Show remarques</button>
+        <button class="btn btn-info" value="infos_actions" onclick="show_infos(this)"> Show actions</button>
+        <button class="btn btn-info" value="infos_accueillants" onclick="show_infos(this)"> Show infos</button>
+    </div>
+
+    <div class="list-group">
+        <div class="list-group-item list-group-item-light">
+            Recherches
+        </div>
+        <form class="list-group-item form-inline" action="/action_page.php">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Nom</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Nom à rechercher">
+            </div>
+        </form>
+    </div>
+</div>

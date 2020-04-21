@@ -1,6 +1,8 @@
-{% extends "layout.html" %}
+{% extends "layout_not_logged_in.html" %}
 
 {% block content %}
-<h1>Liste des mails</h1>
-
+<div class="front-page">
+    <h1> Site de coordination de l'Ouvre Porte </h1>
+    <img src="{{ url_for('static', filename='assets/logo.jpg')}}">
+</div>
 {% endblock content %}
