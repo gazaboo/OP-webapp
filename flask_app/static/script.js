@@ -13,7 +13,6 @@ for (i = 0; i < coll.length; i++) {
     });
 }
 
-
 function num_colonnes(btn) {
     var liste = document.querySelectorAll("[class^=wrapper]")
     num = 12 / btn.value

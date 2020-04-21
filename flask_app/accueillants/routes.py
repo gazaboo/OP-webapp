@@ -32,6 +32,26 @@ def liste_accueillants():
                            form=form)
 
 
+@accueillants.route('/email_accueillant/<int:acc_id>', methods=['GET', 'POST'])
+@login_required
+def email_accueillant(acc_id):
+    acc = Accueillant.query.get_or_404(acc_id)
+    dict_emails = get_conversations(Email_OP.query.distinct())
+    form = SendMailForm()
+
+    if form.validate_on_submit():
+        send_email_simple(
+            'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
+        return redirect(url_for('accueillants.liste_accueillants'))
+    elif request.method == 'GET':
+        form.destinataire.data = acc.email
+    return render_template('email_accueillant.html',
+                           accueillant=acc,
+                           emails=dict_emails,
+                           title="Accueillants",
+                           form=form)
+
+
 @accueillants.route('/accueillant/new', methods=['GET', 'POST'])
 @login_required
 def new_accueillant():

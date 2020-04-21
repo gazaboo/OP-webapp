@@ -1,0 +1,65 @@
+{% extends "layout_logged_in.html" %}
+
+{% block content %}
+<div class="content-section">
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class=" form-group">
+            <div class="form-row">
+                <div class="col-12">
+                    <legend class="border-bottom mb-4"> Envoyer un email à : {{ accueillant.nom }}</legend>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form.destinataire.label(class="form-control-label") }}
+
+                {% if form.destinataire.errors %}
+                {{ form.destinataire(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.destinataire.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.destinataire(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.object_.label(class="form-control-label") }}
+
+                {% if form.object_.errors %}
+                {{ form.object_(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.object_.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.object_(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.body.label(class="form-control-label") }}
+
+                {% if form.body.errors %}
+                {{ form.body(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.body.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.body(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+    </form>
+    <div class="modal-footer">
+        {{ form.submit(class="btn btn-success")}}
+        <button type="bulton" class="btn btn-primary">Sauvegarder</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</div>
+</div>
+{% endblock content %}

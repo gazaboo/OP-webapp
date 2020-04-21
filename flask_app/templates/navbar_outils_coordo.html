@@ -2,33 +2,43 @@
     <h4>Outils du Coordo</h4>
     <ul class="list-group">
         <li class="list-group-item list-group-item-light">
-            Organisation en colonnes
+            Nombre de colonnes
         </li>
         <li class="list-group-item list-group-item-light">
-            <button class="btn btn-warning" value="1" onclick="num_colonnes(this)">:</button>
-            <button class="btn btn-warning" value="2" onclick="num_colonnes(this)">::</button>
-            <button class="btn btn-warning" value="3" onclick="num_colonnes(this)">:::</button>
+            <button class="btn btn-sm btn-warning" value="1" onclick="num_colonnes(this)">:</button>
+            <button class="btn btn-sm btn-warning" value="2" onclick="num_colonnes(this)">::</button>
+            <button class="btn btn-sm btn-warning" value="3" onclick="num_colonnes(this)">:::</button>
         </li>
 
-    </ul>
-    <div class="list-group">
-        <button class="btn btn-info" value="infos_mails" onclick="show_infos(this)"> Show mails</button>
-        <button class="btn btn-info" value="infos_remarques" onclick="show_infos(this)"> Show remarques</button>
-        <button class="btn btn-info" value="infos_actions" onclick="show_infos(this)"> Show actions</button>
-        <button class="btn btn-info" value="infos_accueillants" onclick="show_infos(this)"> Show infos</button>
-    </div>
-
-    <div class="list-group">
+        <li class="list-group-item list-group-item-light">
+            Informations visibles
+        </li>
         <div class="list-group-item list-group-item-light">
-            Recherches
+            <button class="btn btn-sm btn-info m-1" value="infos_accueillants" onclick="show_infos(this)">
+                Infos</button>
+            <button class="btn btn-sm btn-info m-1" value="infos_actions" onclick="show_infos(this)"> Actions</button>
+            <button class="btn btn-sm btn-info m-1" value="infos_remarques" onclick="show_infos(this)">
+                Remarques</button>
+            <button class="btn btn-sm btn-info m-1" value="infos_mails" onclick="show_infos(this)"> Emails</button>
         </div>
-        <form class="list-group-item form-inline" action="/action_page.php">
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Nom</span>
-                </div>
-                <input type="text" class="form-control" placeholder="Nom à rechercher">
+
+        <div class="list-group">
+            <div class="list-group-item list-group-item-light">
+                Recherches
             </div>
-        </form>
-    </div>
+            <form class="list-group-item form-inline" action="">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Nom</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Nom à rechercher">
+                </div>
+                <div class="input-group mt-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Nom</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Nom à rechercher">
+                </div>
+            </form>
+        </div>
 </div>
