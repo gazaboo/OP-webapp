@@ -93,11 +93,19 @@
                 {{ form.accueillis.label(class="form-control-label") }}
                 <div class="mycheckbox">
                     {% for accueilli in accueillis %}
+                    {% if accueilli.id in list_to_check %}
+                    <div class="custom-control custom-checkbox ">
+                        <input type="checkbox" name="check" value={{accueilli.id}} class="custom-control-input"
+                            id="check-{{accueilli.nom}}" checked>
+                        <label class="custom-control-label" for="check-{{accueilli.nom}}"> {{ accueilli.nom }}</label>
+                    </div>
+                    {% else %}
                     <div class="custom-control custom-checkbox ">
                         <input type="checkbox" name="check" value={{accueilli.id}} class="custom-control-input"
                             id="check-{{accueilli.nom}}">
                         <label class="custom-control-label" for="check-{{accueilli.nom}}"> {{ accueilli.nom }}</label>
                     </div>
+                    {% endif%}
                     {% endfor %}
                 </div>
             </div>

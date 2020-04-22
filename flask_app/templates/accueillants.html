@@ -1,25 +1,19 @@
-<div class="wrapper col-md-12 col-lg-6 col-xl-4">
+<div id="{{ accueillant.id }}" class="wrapper col-md-12 col-lg-6">
     <article class="media-custom content-section ">
         <div class="media-body">
             <!-- En tête -->
-            <div class="row">
-                <div class="col-sm 12 col-md-10">
-                    <h3 class="article-title "> <span class="title-custom"> {{ accueillant.nom }} </span> </h3>
-                </div>
-                <div class="col-sm-12 col-md-2 p-0">
+            <div class="en-tete row">
+                <h3 class="article-title "> <span class="title-custom"> {{ accueillant.nom }} </span> </h3>
+                <div class="">
                     <a href="{{ url_for('accueillants.update_accueillant', acc_id=accueillant.id) }}"
-                        class="btn btn-warning btn-sm m-1 py-0" role="button" style="font-size: 0.5em;"
+                        class="btn btn-warning btn-custom m-1 py-0" role="button" style="font-size: 0.5em;"
                         aria-pressed="true">
-                        Modifier
+                        <i class="material-icons orange600">edit</i>
                     </a>
-                    <button type="button" class="btn btn-primary btn-sm m-1 py-0" style="font-size: 0.5em;"
-                        data-toggle="modal" data-target="#exampleModalLong">
-                        Email
-                    </button>
                     <a href="{{ url_for('accueillants.email_accueillant', acc_id=accueillant.id) }}"
-                        class="btn btn-warning btn-sm m-1 py-0" role="button" style="font-size: 0.5em;"
+                        class="btn btn-warning btn-custom m-1 py-0" role="button" style="font-size: 0.5em;"
                         aria-pressed="true">
-                        Email
+                        <i class="material-icons orange600 md-18">mail_outline</i>
                     </a>
                 </div>
             </div>
@@ -43,14 +37,6 @@
                         <p class="p-custom col-lg-12"><small> <b>Adresse :</b> {{ accueillant.adresse }} </small>
                         </p>
                         <p class="p-custom col-lg-12"><small> <b>Email :</b> {{ accueillant.email }}</small></p>
-                        <!-- <div class="col-md-6">
-                    <p class="p-custom"><small> <b>Disponibilite :</b> {{ accueillant.disponibilite }}</small></p>
-                    <p class="p-custom"><small> <b>Téléphone :</b> {{ accueillant.tel }}</small></p>
-                </div>
-                <div class="col-md-6">
-                    <p class="p-custom"><small> <b>Adresse :</b> {{ accueillant.adresse }} </small></p>
-                    <p class="p-custom"><small> <b>Email :</b> {{ accueillant.email }}</small></p>
-                </div> -->
                     </div>
                 </div>
             </div>
@@ -96,75 +82,6 @@
                             </article>
                             {% endfor %}
                             {% endfor %}
-                        </div>
-                        <!-- Send mail Modal -->
-                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Envoyer un mail</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="POST" action="">
-                                            {{ form.hidden_tag() }}
-                                            <fieldset class=" form-group">
-                                                <div class="form-group">
-                                                    {{ form.destinataire.label(class="form-control-label") }}
-
-                                                    {% if form.destinataire.errors %}
-                                                    {{ form.destinataire(class="form-control form-control-lg is-invalid") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.destinataire.errors %}
-                                                        <span>{{ error }}</span>
-                                                        {% endfor%}
-                                                    </div>
-                                                    {% else %}
-                                                    {{ form.destinataire(class="form-control form-control-lg") }}
-                                                    {% endif %}
-                                                </div>
-                                                <div class="form-group">
-                                                    {{ form.object_.label(class="form-control-label") }}
-
-                                                    {% if form.object_.errors %}
-                                                    {{ form.object_(class="form-control form-control-lg is-invalid") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.object_.errors %}
-                                                        <span>{{ error }}</span>
-                                                        {% endfor%}
-                                                    </div>
-                                                    {% else %}
-                                                    {{ form.object_(class="form-control form-control-lg") }}
-                                                    {% endif %}
-                                                </div>
-                                                <div class="form-group">
-                                                    {{ form.body.label(class="form-control-label") }}
-
-                                                    {% if form.body.errors %}
-                                                    {{ form.body(class="form-control form-control-lg is-invalid") }}
-                                                    <div class="invalid-feedback">
-                                                        {% for error in form.body.errors %}
-                                                        <span>{{ error }}</span>
-                                                        {% endfor%}
-                                                    </div>
-                                                    {% else %}
-                                                    {{ form.body(class="form-control form-control-lg") }}
-                                                    {% endif %}
-                                                </div>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        {{ form.submit(class="btn btn-success")}}
-                                        <button type="bulton" class="btn btn-primary">Sauvegarder</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                 </div>
             </div>

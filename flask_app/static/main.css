@@ -124,6 +124,13 @@ h1 {
     padding: 0.2rem;
 }
 
-.testjs {
-    color: red;
+.en-tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.btn-custom {
+    width: 1.75rem;
+    padding: 1px;
 }

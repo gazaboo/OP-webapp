@@ -4,47 +4,19 @@ from flask_app import db, login_manager
 from sqlalchemy.orm import relationship, backref
 
 
-
-Accueil = db.Table('accueils',
-                        db.Column('id',
-                                db.Integer,
-                                primary_key=True),
-                        db.Column('accueillant_id',
-                                db.Integer,
-                                db.ForeignKey('accueillants.id', ondelete="cascade")),
-                        db.Column('accueilli_id',
-                                db.Integer,
-                                db.ForeignKey('accueillis.id', ondelete="cascade")))
-
-# class Employee(db.Model):
-#     __tablename__ = 'employees'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.Text)
-#     years_at_company = db.Column(db.Integer)
-#     departments = db.relationship("Department",
-#                                   secondary=EmployeeDepartment,
-#                                   backref=db.backref('employees'))
-
-#     def __init__(self, name, years_at_company):
-#         self.name = name
-#         self.years_at_company = years_at_company
-
-# class Department(db.Model):
-#     __tablename__ = 'departments'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.Text)
-
-#     def __init__(self, name):
-#         self.name = name
-
-
-
-
 @login_manager.user_loader
 def load_coordinateur(coordo_id):
     return Coordinateur.query.get(int(coordo_id))
+
+
+class Accueil(db.Model):
+    __tablename__ = 'accueils'
+    id = db.Column(db.Integer, primary_key=True)
+    accueillant_id = db.Column(db.Integer, db.ForeignKey(
+        'accueillants.id', ondelete="cascade"))
+    accueilli_id = db.Column(db.Integer, db.ForeignKey(
+        'accueillis.id', ondelete="cascade"))
+    # dates_accueil = db.Column(ARRAY(db.Date))
 
 
 class Accueillant(db.Model):
@@ -57,9 +29,9 @@ class Accueillant(db.Model):
     email = db.Column(db.String(120), unique=False, nullable=True)
     next_action = db.Column(db.Text, unique=False, nullable=True)
     remarques = db.Column(db.Text, unique=False, nullable=True)
-    accueillis = db.relationship("Accueilli", 
-                                    secondary=Accueil, 
-                                    backref= db.backref('accueillants'))
+    accueillis = db.relationship("Accueilli",
+                                 secondary='accueils',
+                                 backref=db.backref('accueillants'))
 
     def __repr__(self):
         return f"Accueillant : {self.nom}, {self.email}"
@@ -135,3 +107,15 @@ class Email_OP(db.Model):
 #     def __init__(self, from_, to_, date_, subject_, body_):
 #         self.accueillant_id = accueillant_id
 #         self.accueilli_id = accueilli_id
+
+
+# Accueil = db.Table('accueils',
+#                    db.Column('id',
+#                              db.Integer,
+#                              primary_key=True),
+#                    db.Column('accueillant_id',
+#                              db.Integer,
+#                              db.ForeignKey('accueillants.id', ondelete="cascade")),
+#                    db.Column('accueilli_id',
+#                              db.Integer,
+#                              db.ForeignKey('accueillis.id', ondelete="cascade")))

@@ -13,23 +13,15 @@ from flask_app.accueillants.utils_mailer import get_mail_from_last, get_conversa
 accueillants = Blueprint('accueillants', '__name__')
 
 
-@accueillants.route('/liste_accueillants', methods=['GET', 'POST'])
+@accueillants.route('/liste_accueillants')
 @login_required
 def liste_accueillants():
     liste_accueillants = Accueillant.query.all()
     dict_emails = get_conversations(Email_OP.query.distinct())
-
-    # Send email
-    form = SendMailForm()
-    if form.validate_on_submit():
-        send_email_simple(
-            'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
-
     return render_template('liste_accueillants.html',
                            accueillants=liste_accueillants,
                            emails=dict_emails,
-                           title="Accueillants",
-                           form=form)
+                           title="Accueillants")
 
 
 @accueillants.route('/email_accueillant/<int:acc_id>', methods=['GET', 'POST'])
@@ -37,19 +29,18 @@ def liste_accueillants():
 def email_accueillant(acc_id):
     acc = Accueillant.query.get_or_404(acc_id)
     dict_emails = get_conversations(Email_OP.query.distinct())
-    form = SendMailForm()
-
-    if form.validate_on_submit():
+    form_mail = SendMailForm()
+    if form_mail.validate_on_submit():
         send_email_simple(
             'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
         return redirect(url_for('accueillants.liste_accueillants'))
     elif request.method == 'GET':
-        form.destinataire.data = acc.email
+        form_mail.destinataire.data = acc.email
     return render_template('email_accueillant.html',
                            accueillant=acc,
                            emails=dict_emails,
                            title="Accueillants",
-                           form=form)
+                           form=form_mail)
 
 
 @accueillants.route('/accueillant/new', methods=['GET', 'POST'])
@@ -70,7 +61,6 @@ def new_accueillant():
         values = request.form.getlist('check')
         list_acc = [Accueilli.query.get(v) for v in values]
         accueillant.accueillis.extend(list_acc)
-
         db.session.add(accueillant)
         db.session.commit()
         flash('Accueillant créé', 'success')
@@ -99,9 +89,9 @@ def update_accueillant(acc_id):
         acc.remarques = form.remarques.data
         values = request.form.getlist('check')
         list_acc = [Accueilli.query.get(v) for v in values]
-        acc.accueillis.extend(list_acc)
+        acc.accueillis = list_acc
         db.session.commit()
-        return redirect(url_for('accueillants.liste_accueillants'))
+        return redirect(url_for('accueillants.liste_accueillants')+f"#{acc.id}")
     elif request.method == 'GET':
         form.nom.data = acc.nom
         form.tel.data = acc.tel
@@ -109,13 +99,15 @@ def update_accueillant(acc_id):
         form.email.data = acc.email
         form.next_action.data = acc.next_action
         form.remarques.data = acc.remarques
+        list_to_check = [a.id for a in acc.accueillis]
 
     return render_template('accueillant_infos.html',
                            title='create_modif_accueillant',
                            legend='Modifier les Infos',
                            form=form,
                            accueillant=acc,
-                           accueillis=accueillis)
+                           accueillis=accueillis,
+                           list_to_check=list_to_check)
 
 
 @accueillants.route('/accueillant/<int:acc_id>/delete', methods=['POST'])
