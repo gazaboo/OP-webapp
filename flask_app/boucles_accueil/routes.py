@@ -6,8 +6,28 @@ from flask_app.models import Accueilli, Accueillant, Email_OP
 from flask_app.boucles_accueil.forms import AccueilliInfoForm
 from flask_app.accueillants.utils_mailer import get_conversations
 from flask_app.accueillants.forms import SendMailForm
-
+from sqlalchemy.orm import Session
 boucles_accueil = Blueprint('boucles_accueil', '__name__')
+
+
+@boucles_accueil.route('/calendar')
+@login_required
+def calendar():
+    return render_template('calendar.html')
+
+
+@boucles_accueil.route('/boucle/<int:acc_id>')
+@login_required
+def boucle(acc_id):
+    accueilli = Accueilli.query.get_or_404(acc_id)
+    dict_emails = get_conversations(Email_OP.query.distinct())
+    liste_accueillants = Accueillant.query.filter(
+        Accueillant.id.in_([a.id for a in accueilli.accueillants])).all()
+
+    return render_template('boucle.html',
+                           accueilli=accueilli,
+                           accueillants=liste_accueillants,
+                           emails=dict_emails)
 
 
 @boucles_accueil.route('/liste_accueillis')

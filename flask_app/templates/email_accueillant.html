@@ -24,6 +24,19 @@
                 {% endif %}
             </div>
             <div class="form-group">
+                {{ form.destinataire_copie.label(class="form-control-label") }}
+                {% if form.destinataire_copie.errors %}
+                {{ form.destinataire_copie(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.destinataire_copie.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor%}
+                </div>
+                {% else %}
+                {{ form.destinataire_copie(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
                 {{ form.object_.label(class="form-control-label") }}
 
                 {% if form.object_.errors %}
@@ -52,14 +65,13 @@
                 {% endif %}
             </div>
         </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-success")}}
+            <button type="button" class="btn btn-primary">Sauvegarder</button>
+            <a class="btn btn-secondary" href="{{ url_for('accueillants.liste_accueillants')}}#{{accueillant.id}}">
+                Close
+            </a>
+        </div>
     </form>
-    <div class="modal-footer">
-        {{ form.submit(class="btn btn-success")}}
-        <button type="bulton" class="btn btn-primary">Sauvegarder</button>
-        <a class="btn btn-secondary" href="{{ url_for('accueillants.liste_accueillants')}}#{{accueillant.id}}">
-            Close
-        </a>
-    </div>
-</div>
 </div>
 {% endblock content %}

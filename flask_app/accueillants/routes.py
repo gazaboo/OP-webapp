@@ -1,11 +1,13 @@
+import re
+
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_required
+from flask_mail import Message
+from bs4 import BeautifulSoup as soup
 
 from env import GOOGLE_APP_CREDS
-from flask_app import db
-
+from flask_app import db, mail
 from flask_app.models import Accueillant, Email_OP, Accueilli
-
 from flask_app.accueillants.forms import SendMailForm, AccueillantInfoForm
 from flask_app.accueillants.utils_mailer import get_mail_from_last, get_conversations, send_email_simple, connect_to_drive
 
@@ -29,18 +31,26 @@ def liste_accueillants():
 def email_accueillant(acc_id):
     acc = Accueillant.query.get_or_404(acc_id)
     dict_emails = get_conversations(Email_OP.query.distinct())
-    form_mail = SendMailForm()
-    if form_mail.validate_on_submit():
-        send_email_simple(
-            'florian.dadouchi@gmail.com', form.body.data, 'test formulaire')
-        return redirect(url_for('accueillants.liste_accueillants'))
+    form = SendMailForm()
+    if form.validate_on_submit():
+        emails_re = "([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)"
+        recipients = re.findall(emails_re, "florian.dadouchi@gmail.com")
+        recipients = list(map(str.lower, recipients))
+        cc = re.findall(emails_re, form.destinataire_copie.data)
+        cc = list(map(str.lower, cc))
+        msg = Message(subject=form.object_.data,
+                      body=form.body.data,
+                      recipients=recipients,
+                      cc=cc)
+        mail.send(msg)
+        return redirect(url_for('accueillants.liste_accueillants')+f"#{acc.id}")
     elif request.method == 'GET':
-        form_mail.destinataire.data = acc.email
+        form.destinataire.data = acc.email
     return render_template('email_accueillant.html',
                            accueillant=acc,
                            emails=dict_emails,
                            title="Accueillants",
-                           form=form_mail)
+                           form=form)
 
 
 @accueillants.route('/accueillant/new', methods=['GET', 'POST'])
@@ -135,7 +145,6 @@ def synchronize():
     liste_accueillants_raw = coordo_sheet.get_all_values()
 
     # Handle poorly formatted emails
-    import re
     emails_re = "([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)"
     tel_re = "([0-9][0-9])"
     liste_accueillants_to_add = \
@@ -163,7 +172,6 @@ def synchronize():
 @accueillants.route('/synchronize_email')
 @login_required
 def synchronize_email():
-    from bs4 import BeautifulSoup as soup
     mails_roundcube = get_mail_from_last(180)
 
     for m in mails_roundcube:

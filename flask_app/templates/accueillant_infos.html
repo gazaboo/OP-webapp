@@ -5,18 +5,8 @@
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
-            <div class="form-row">
-                <div class="col-10">
-                    <legend class="border-bottom mb-4"> {{ legend }}</legend>
-                </div>
-                {% if accueillant %}
-                <div class="col-2">
-                    <button type="button" class="btn btn-danger btn-sm m-1 py-0" style="font-size: 0.5em;"
-                        data-toggle="modal" data-target="#deleteModal">
-                        Supprimer
-                    </button>
-                </div>
-                {% endif %}
+            <div class="en-tete form-row">
+                <legend class="border-bottom mb-4"> {{ legend }}</legend>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -138,9 +128,16 @@
                 {% endif %}
             </div>
         </fieldset>
-        <div class="form-group">
+        <div class="en-tete form-group">
             {{ form.submit(class="btn btn-outline-info")}}
+            {% if accueillant %}
+            <button type="button" class="btn btn-danger btn-sm m-1 py-0" style="font-size: 0.5em;" data-toggle="modal"
+                data-target="#deleteModal">
+                <span class="material-icons red600">delete_forever</span>
+            </button>
+            {% endif %}
         </div>
+
 
     </form>
 </div>
