@@ -1,0 +1,11 @@
+{% extends 'layout_logged_in.html' %}
+{% block scripts %}
+{{ super() }}
+{{ datepicker.loader() }} {# to load jQuery-ui #}
+{{ datepicker.picker(id=".dp") }}
+{% endblock %}
+{% block content %}
+<form class="verticalform">
+    <input type="text" class="form-control dp" />
+</form>
+{% endblock %}

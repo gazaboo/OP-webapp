@@ -1,0 +1,13 @@
+{% extends "layout_logged_in.html" %}
+
+{% block content %}
+<h2>Boucle d'accueil de {{ accueilli.nom }}</h2>
+<div class="row">
+</div>
+<div class="row">
+    {% for accueillant in accueilli.accueillants %}
+    {% include 'accueillants.html' %}
+    {% endfor %}
+</div>
+
+{% endblock content %}

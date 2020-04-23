@@ -7,5 +7,6 @@ class AccueilliInfoForm(FlaskForm):
     nom = StringField('Nom', validators=[DataRequired()])
     tel = StringField('Téléphone')
     email = StringField('Email')
+    next_action = TextAreaField('Prochaine action')
     remarques = TextAreaField('Remarques')
     submit = SubmitField("OK")

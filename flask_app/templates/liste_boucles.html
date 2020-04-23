@@ -1,0 +1,68 @@
+{% extends "layout_logged_in.html" %}
+
+{% block content %}
+<h1>Liste des boucles d'accueil</h1>
+{% for acc in accueillis %}
+<div class='mt-4'>
+    <div id="{{ acc.id }}" class="wrapper col-md-12 col-lg-6">
+        <article class="media-custom content-section ">
+            <div class="media-body">
+                <!-- En tête -->
+                <div class="en-tete row">
+                    <h3 class="article-title "> <span class="title-custom"> Boucle d'accueil de {{ acc.nom }} </span>
+                    </h3>
+                    <div class="">
+                        <a href="{{ url_for('boucles_accueil.update_accueilli', acc_id=acc.id) }}"
+                            class="btn btn-warning btn-custom m-1 py-0" role="button" style="font-size: 0.5em;"
+                            aria-pressed="true">
+                            <i class="material-icons orange600">edit</i>
+                        </a>
+                        <a href="{{ url_for('accueilli.email_accueilli', acc_id=acc.id) }}"
+                            class="btn btn-warning btn-custom m-1 py-0" role="button" style="font-size: 0.5em;"
+                            aria-pressed="true">
+                            <i class="material-icons orange600 md-18">mail_outline</i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Noms des accueillis -->
+                <div class="row">
+                    <h4>Accueilli par : </h4>
+                    {% for a in acc.accueillants %}
+                    <button type="button" class="btn btn-outline-info btn-xs m-1 py-0">{{ a.nom }}</button>
+                    {% endfor%}
+                </div>
+
+                <!-- Infos sur l'accueillant -->
+                <div class="infos_accueillants">
+                    <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
+                        data-target="#info-{{acc.id}}">Informations</button>
+                    <div id="info-{{acc.id}}" class="collapse show">
+                        <div class="row">
+                            <p class="p-custom col-lg-12"><small> <b>Téléphone :</b> {{ acc.tel }}</small></p>
+                            <p class="p-custom col-lg-12"><small> <b>Email :</b> {{ acc.email }}</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prochaines actions à mener -->
+                <div class="infos_actions">
+                    <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
+                        data-target="#action-{{acc.id}}">Prochaine action</button>
+                    <div id="action-{{acc.id}}" class="collapse show">
+                        <small>{{ acc.next_action }}</small>
+                    </div>
+                </div>
+                <!-- Remarques -->
+                <div class="infos_remarques">
+                    <button type="button" class="btn btn-info btn-block btn-collapse-custom" data-toggle="collapse"
+                        data-target="#remarque-{{acc.id}}">Remarques</button>
+                    <div id="remarque-{{acc.id}}" class="collapse">
+                        <small>{{ acc.remarques }}</small>
+                    </div>
+                </div>
+        </article>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
