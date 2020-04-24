@@ -2,11 +2,38 @@ from flask_login import UserMixin
 from datetime import datetime
 from flask_app import db, login_manager
 from sqlalchemy.orm import relationship, backref
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask_app import app
 
 
 @login_manager.user_loader
 def load_coordinateur(coordo_id):
     return Coordinateur.query.get(int(coordo_id))
+
+
+class Coordinateur(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    nom = db.Column(db.String(120), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=True,
+                           default='default.jpg')
+    password = db.Column(db.String(60), nullable=False)
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_in=expires_sec)
+        return s.dumps({'coordo_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            coordo_id = s.loads(token)['coordo_id']
+        except:
+            return None
+        return Coordinateur.query.get(coordo_id)
+
+    def __repr__(self):
+        return f"Coordo : {self.nom}, {self.email}"
 
 
 class Accueil(db.Model):
@@ -44,18 +71,6 @@ class Accueillant(db.Model):
         self.email = email
         self.next_action = next_action
         self.remarques = remarques
-
-
-class Coordinateur(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    nom = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=True,
-                           default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
-
-    def __repr__(self):
-        return f"Coordo : {self.nom}, {self.email}"
 
 
 class Accueilli(db.Model):

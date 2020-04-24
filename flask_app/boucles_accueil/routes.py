@@ -78,7 +78,7 @@ def update_accueilli():
 
 @boucles_accueil.route('/email_accueilli/<int:acc_id>', methods=['GET', 'POST'])
 @login_required
-def email_accueillant(acc_id):
+def email_accueilli(acc_id):
     acc = Accueilli.query.get_or_404(acc_id)
     dict_emails = get_conversations(Email_OP.query.distinct())
     form = SendMailForm()

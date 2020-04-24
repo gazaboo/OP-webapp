@@ -6,8 +6,8 @@ from flask_mail import Message
 from bs4 import BeautifulSoup as soup
 
 from env import GOOGLE_APP_CREDS
-from flask_app import db, mail
-from flask_app.models import Accueillant, Email_OP, Accueilli
+from flask_app import db, mail, bcrypt
+from flask_app.models import Accueillant, Email_OP, Accueilli, Coordinateur
 from flask_app.accueillants.forms import SendMailForm, AccueillantInfoForm
 from flask_app.accueillants.utils_mailer import get_mail_from_last, get_conversations, send_email_simple, connect_to_drive
 
@@ -135,8 +135,14 @@ def delete_accueillant(acc_id):
 #######################
 
 @accueillants.route('/synchronize', methods=['GET', 'POST'])
-@login_required
 def synchronize():
+    # Add the admin
+    hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
+    coordo = Coordinateur(
+        nom="admin", email="admin@admin.org", password=hashed_password)
+    db.session.add(coordo)
+    db.session.commit()
+
     # Get the data
     credentials = GOOGLE_APP_CREDS
     client = connect_to_drive(credentials)
