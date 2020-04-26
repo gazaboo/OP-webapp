@@ -41,7 +41,8 @@ def send_email_invitation(coordo):
     msg = Message("Message d'invitation",
                   sender=LOP_LOGIN,
                   recipients=['florian.dadouchi@gmail.com'])
-    msg.body = f''' Pour devenir coordinateur de l'Ouvre Porte : 
+    msg.body = f''' Pour devenir coordinateur de l'Ouvre Porte :
+
     {url_for('coordinateurs.register', token=token, _external=True)}'''
     mail.send(msg)
 
@@ -65,7 +66,7 @@ def register(token):
         coordo.nom = form.username.data
         db.session.commit()
         flash(f'Compte créé pour {form.username.data} !', 'success')
-        return redirect(url_for('accueillants.liste_accueillants'))
+        return redirect(url_for('coordinateurs.login'))
     return render_template('register.html', title='Register', form=form)
 
 

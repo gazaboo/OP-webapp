@@ -8,7 +8,6 @@
             <legend class="border-bottom mb-4">Envie d'être coordo ?</legend>
             <div class="form-group">
                 {{ form.username.label(class="form-control-label") }}
-
                 {% if form.username.errors %}
                 {{ form.username(class="form-control form-control-lg is-invalid") }}
                 <div class="invalid-feedback">
@@ -58,7 +57,7 @@
 </div>
 <div class="border-top pt-3">
     <small class="text-muted">
-        Already have an account ? <a href="{{url_for('coordinateurs.login')}}" class="ml-2"> Sign In</a>
+        Vous avez déjà un compte ? <a href="{{url_for('coordinateurs.login')}}" class="ml-2">Se connecter</a>
     </small>
 </div>
 {% endblock content %}
