@@ -21,7 +21,8 @@
             <!-- Noms des accueillis -->
             <div class="row">
                 {% for a in accueillant.accueillis %}
-                <button type="button" class="btn btn-outline-info btn-xs m-1 py-0">{{ a.nom }}</button>
+                <a href="{{ url_for('boucles_accueil.boucle', acc_id=a.id) }}"
+                    class="btn btn-outline-info btn-xs m-1 py-0">{{ a.nom }}</a>
                 {% endfor%}
             </div>
 

@@ -1,11 +1,85 @@
 {% extends 'layout_logged_in.html' %}
-{% block scripts %}
-{{ super() }}
-{{ datepicker.loader() }} {# to load jQuery-ui #}
-{{ datepicker.picker(id=".dp") }}
-{% endblock %}
+
 {% block content %}
-<form class="verticalform">
-    <input type="text" class="form-control dp" />
-</form>
+<h2>Liste des accueillants</h2>
+<div class="gestion row">
+    {% for accueillant in accueilli.accueillants %}
+    {% include 'accueillants.html' %}
+    {% endfor %}
+</div>
+
+<div class="container">
+    <h2>Planning d'accueil</h2>
+    <div class="content-section">
+        <form class='form-inline' method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <div class="form-group">
+                    {{ form.date_debut.label(class="form-control-label") }}
+                    {% if form.date_debut.errors %}
+                    {{ form.date_debut(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.date_debut.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.date_debut(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.date_fin.label(class="form-control-label") }}
+                    {% if form.date_fin.errors %}
+                    {{ form.date_fin(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.date_fin.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.date_fin(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.accueillant.label(class="form-control-label") }}
+                    {% if form.accueillant.errors %}
+                    {{ form.accueillant(class="form-control form-control-sm is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.accueillant.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor%}
+                    </div>
+                    {% else %}
+                    {{ form.accueillant(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info")}}
+            </div>
+
+        </form>
+    </div>
+
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Début d'accueil</th>
+                <th>Fin d'accueil</th>
+                <th>Accueillants</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in sejours %}
+            <tr>
+                <td>{{ s.date_debut }}</td>
+                <td>{{ s.date_fin }} </td>
+                <td>{{ s.infos.nom }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
 {% endblock %}

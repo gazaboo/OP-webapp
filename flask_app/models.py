@@ -43,7 +43,16 @@ class Accueil(db.Model):
         'accueillants.id', ondelete="cascade"))
     accueilli_id = db.Column(db.Integer, db.ForeignKey(
         'accueillis.id', ondelete="cascade"))
-    # dates_accueil = db.Column(ARRAY(db.Date))
+
+
+class Sejour(db.Model):
+    __tablename__ = 'sejours'
+    id = db.Column(db.Integer, primary_key=True)
+    accueilli_id = db.Column(db.String(120), unique=False, nullable=True)
+    accueillant_id = db.Column(db.Integer, db.ForeignKey('accueillants.id'))
+    date_debut = db.Column(db.Date, unique=False, nullable=True)
+    date_fin = db.Column(db.Date, unique=False, nullable=True)
+    remarque = db.Column(db.Text, unique=False, nullable=True)
 
 
 class Accueillant(db.Model):
@@ -56,6 +65,7 @@ class Accueillant(db.Model):
     email = db.Column(db.String(120), unique=False, nullable=True)
     next_action = db.Column(db.Text, unique=False, nullable=True)
     remarques = db.Column(db.Text, unique=False, nullable=True)
+    sejours = db.relationship('Sejour', backref='infos')
     accueillis = db.relationship("Accueilli",
                                  secondary='accueils',
                                  backref=db.backref('accueillants'))

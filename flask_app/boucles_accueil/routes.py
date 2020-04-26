@@ -1,33 +1,43 @@
 from flask import render_template, url_for, flash, redirect, Blueprint
 from flask_login import login_required
-
 from flask_app import db
-from flask_app.models import Accueilli, Accueillant, Email_OP
-from flask_app.boucles_accueil.forms import AccueilliInfoForm
+from flask_app.models import Accueilli, Accueillant, Email_OP, Sejour
+from flask_app.boucles_accueil.forms import AccueilliInfoForm, NewAccueilForm
 from flask_app.accueillants.utils_mailer import get_conversations
 from flask_app.accueillants.forms import SendMailForm
+from sqlalchemy import desc
 
 boucles_accueil = Blueprint('boucles_accueil', '__name__')
 
 
-@boucles_accueil.route('/calendar')
-@login_required
-def calendar():
-    return render_template('calendar.html')
-
-
-@boucles_accueil.route('/boucle/<int:acc_id>')
+@boucles_accueil.route('/boucle/<int:acc_id>', methods=['GET', 'POST'])
 @login_required
 def boucle(acc_id):
     accueilli = Accueilli.query.get_or_404(acc_id)
+    sejours = (Sejour.query.filter_by(accueilli_id=accueilli.id)
+                           .order_by(desc("date_debut"))
+                           .all())
+
     dict_emails = get_conversations(Email_OP.query.distinct())
     liste_accueillants = Accueillant.query.filter(
         Accueillant.id.in_([a.id for a in accueilli.accueillants])).all()
-
+    form = NewAccueilForm(obj=accueilli)
+    form.accueillant.choices = [(acc.id, acc.nom)
+                                for acc in liste_accueillants]
+    if form.validate_on_submit():
+        new_sejour = Sejour(accueilli_id=accueilli.id,
+                            accueillant_id=form.accueillant.data,
+                            date_debut=form.date_debut.data,
+                            date_fin=form.date_fin.data,
+                            remarque=form.remarque.data)
+        db.session.add(new_sejour)
+        db.session.commit()
+        return redirect(url_for('boucles_accueil.boucle', acc_id=accueilli.id))
     return render_template('boucle.html',
                            accueilli=accueilli,
-                           accueillants=liste_accueillants,
-                           emails=dict_emails)
+                           form=form,
+                           emails=dict_emails,
+                           sejours=sejours)
 
 
 @boucles_accueil.route('/liste_boucles')

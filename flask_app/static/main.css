@@ -134,3 +134,7 @@ h1 {
     width: 1.75rem;
     padding: 1px;
 }
+
+.table-hover tbody tr:hover td {
+    background: rgba(251, 176, 0, 0.52);
+}
