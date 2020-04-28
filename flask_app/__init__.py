@@ -20,6 +20,7 @@ mail_settings = {
 app = Flask(__name__)
 app.config['SECRET_KEY'] = APP_CONFIG_SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.update(mail_settings)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -37,8 +38,3 @@ app.register_blueprint(main)
 app.register_blueprint(boucles_accueil)
 app.register_blueprint(coordinateurs)
 app.register_blueprint(accueillants)
-
-# from flask_datepicker import datepicker
-# from flask_bootstrap import Bootstrap
-
-# datepicker(app)

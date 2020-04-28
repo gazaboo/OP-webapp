@@ -3,9 +3,10 @@ FROM continuumio/miniconda3
 WORKDIR /usr/src/app
 COPY . .
 
-RUN conda update -n base -c defaults conda 
-RUN while read requirement; do conda install -c conda-forge --yes $requirement || pip install $requirement; done < requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+ENV FLASK_APP=flask_app/__init__.py
+RUN python manage.py create_db
 
 EXPOSE 5000
-ENTRYPOINT ["python"]
-CMD ["run.py" ]
+CMD ["gunicorn", "--bind", ":5000", "--workers", "3", "run:app"]
