@@ -1,1 +1,1 @@
-web: gunicorn deploy:app 
+web: gunicorn --bind :5000 --workers 3 run:app
