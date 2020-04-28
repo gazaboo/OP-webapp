@@ -2,3 +2,4 @@ env.py
 .vscode
 __pycache__
 .dockerignore
+flask_app/site.db
